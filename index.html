@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dani Santos Terapeuta Holística - Agendamentos</title>
+  <style>
+    :root {
+      --primary: #7c3aed; /* Tom roxo/holístico */
+      --primary-hover: #6d28d9;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --success: #16a34a;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 900px;
+    }
+
+    /* Navegação de Abas */
+    .tabs-nav {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      background: #e2e8f0;
+      padding: 5px;
+      border-radius: var(--radius);
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background: transparent;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 8px;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      background: var(--card-bg);
+      color: var(--primary);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    /* Layout do Card Central */
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 24px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      margin-bottom: 20px;
+    }
+
+    .header-profile {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+      margin-bottom: 20px;
+    }
+
+    .header-profile h1 {
+      font-size: 1.5rem;
+      color: var(--primary);
+    }
+
+    .header-profile p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* Form Grids */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.85rem;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--primary);
+    }
+
+    /* Seletor de Horários Grid */
+    .slots-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .slot-btn {
+      padding: 10px;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .slot-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .slot-btn.selected {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 12px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    /* Lista de Agendamentos (Admin) */
+    .appointment-item {
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: #dcfce7;
+      color: var(--success);
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .empty-state {
+      text-align: center;
+      color: var(--text-muted);
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-container">
+
+  <!-- Navegação de Abas -->
+  <div class="tabs-nav">
+    <button class="tab-btn active" onclick="switchTab(event, 'client-view')">🔗 Link Público (Cliente)</button>
+    <button class="tab-btn" onclick="switchTab(event, 'admin-view')">⚙️ Painel Interno (Admin)</button>
+  </div>
+
+  <!-- VISÃO 1: LINK PÚBLICO DO CLIENTE -->
+  <div id="client-view" class="tab-content">
+    <div class="card">
+      <div class="header-profile">
+        <h1>Dani Santos Terapeuta Holística</h1>
+        <p>Escolha o serviço, dia e horário desejado para o seu atendimento.</p>
+      </div>
+
+      <form id="public-booking-form" onsubmit="confirmarAgendamento(event)">
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Selecione o Serviço</label>
+            <select id="service-select" required>
+              <option value="Atendimento Terapêutico">Atendimento Terapêutico (1 hora)</option>
+              <option value="Sessão Terapêutica Express">Atendimento Terapêutico Express (45 min)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Data</label>
+            <input type="date" id="booking-date" required onchange="carregarHorariosDisponiveis()">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Horários Disponíveis</label>
+          <div id="slots-container" class="slots-grid">
+            <div class="empty-state">Selecione uma data para consultar os horários livres.</div>
+          </div>
+        </div>
+
+        <hr style="margin: 20px 0; border: none; border-top: 1px solid var(--border);">
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Seu Nome Completo</label>
+            <input type="text" id="client-name" placeholder="Ex: Maria Silva" required>
+          </div>
+          <div class="form-group">
+            <label>WhatsApp / Telefone</label>
+            <input type="tel" id="client-phone" placeholder="(00) 00000-0000" required>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary">Confirmar Agendamento</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- VISÃO 2: PAINEL DO ADMINISTRADOR -->
+  <div id="admin-view" class="tab-content" style="display: none;">
+    <div class="card">
+      <div class="header-profile">
+        <h2>Agendamentos de Dani Santos</h2>
+        <p>Gerenciamento de consultas e sincronização com o Controle de Vendas.</p>
+      </div>
+
+      <div id="admin-appointments-list">
+        <!-- Lista carregada dinamicamente pelo JS -->
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // --- CONFIGURAÇÃO DE ATENDIMENTO ---
+  const configEmpresa = {
+    inicio: "08:00",
+    ultimo_horario_inicio: "20:00", // Permite agendar às 20:00
+    duracao_minutos: 60,            // Duração padrão de 1 hora por atendimento
+    intervalo_minutos: 0           // Sem intervalo fixo
+  };
+
+  // Banco de dados em memória
+  let agendamentosDoBanco = [
+    {
+      id: "001",
+      cliente_nome: "Ana Souza",
+      cliente_phone: "51988887777",
+      servico: "Atendimento Terapêutico",
+      data: "2026-08-10",
+      horario_inicio: "10:00",
+      horario_fim: "11:00"
+    }
+  ];
+
+  let horarioSelecionado = null;
+
+  // Setar data mínima como hoje
+  document.getElementById('booking-date').min = new Date().toISOString().split('T')[0];
+
+  // Alternar entre abas
+  function switchTab(evt, tabId) {
+    document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+    
+    document.getElementById(tabId).style.display = 'block';
+    evt.target.classList.add('active');
+
+    if (tabId === 'admin-view') {
+      renderizarAdmin();
+    }
+  }
+
+  // --- CÁLCULO DE DISPONIBILIDADE (PERMITINDO INÍCIO ÀS 20:00) ---
+  function carregarHorariosDisponiveis() {
+    const dataInput = document.getElementById('booking-date').value;
+    const container = document.getElementById('slots-container');
+    container.innerHTML = '';
+    horarioSelecionado = null;
+
+    if (!dataInput) return;
+
+    // Filtra apenas os agendamentos existentes na data selecionada
+    const ocupados = agendamentosDoBanco.filter(a => a.data === dataInput);
+
+    const timeToMins = t => {
+      const [h, m] = t.split(':').map(Number);
+      return h * 60 + m;
+    };
+    
+    const minsToTime = m => {
+      const h = Math.floor(m / 60).toString().padStart(2, '0');
+      const min = (m % 60).toString().padStart(2, '0');
+      return `${h}:${min}`;
+    };
+
+    const inicio = timeToMins(configEmpresa.inicio);
+    const ultimoInicio = timeToMins(configEmpresa.ultimo_horario_inicio);
+    const slotTotal = configEmpresa.duracao_minutos + configEmpresa.intervalo_minutos;
+
+    let atual = inicio;
+    let slotsEncontrados = 0;
+
+    // A condição permite gerar o slot inclusive quando o horário de início for 20:00
+    while (atual <= ultimoInicio) {
+      const slotIni = atual;
+      const slotFim = atual + configEmpresa.duracao_minutos;
+
+      // O único bloqueio existente é se o horário conflitar com um agendamento já feito
+      const conflitaAgendamento = ocupados.some(o => {
+        return (slotIni < timeToMins(o.horario_fim) && slotFim > timeToMins(o.horario_inicio));
+      });
+
+      if (!conflitaAgendamento) {
+        const txtInicio = minsToTime(slotIni);
+        const txtFim = minsToTime(slotFim);
+        
+        const btn = document.createElement('div');
+        btn.className = 'slot-btn';
+        btn.innerText = txtInicio;
+        btn.onclick = () => selecionarHorario(btn, txtInicio, txtFim);
+        
+        container.appendChild(btn);
+        slotsEncontrados++;
+      }
+
+      atual += slotTotal;
+    }
+
+    if (slotsEncontrados === 0) {
+      container.innerHTML = '<div class="empty-state">Nenhum horário disponível para esta data.</div>';
+    }
+  }
+
+  function selecionarHorario(elemento, inicio, fim) {
+    document.querySelectorAll('.slot-btn').forEach(el => el.classList.remove('selected'));
+    elemento.classList.add('selected');
+    horarioSelecionado = { inicio, fim };
+  }
+
+  // --- SUBMETER AGENDAMENTO DO CLIENTE ---
+  function confirmarAgendamento(e) {
+    e.preventDefault();
+
+    if (!horarioSelecionado) {
+      alert('Por favor, selecione um horário disponível na grade.');
+      return;
+    }
+
+    const novoAgendamento = {
+      id: Date.now().toString(),
+      cliente_nome: document.getElementById('client-name').value,
+      cliente_phone: document.getElementById('client-phone').value,
+      servico: document.getElementById('service-select').value,
+      data: document.getElementById('booking-date').value,
+      horario_inicio: horarioSelecionado.inicio,
+      horario_fim: horarioSelecionado.fim
+    };
+
+    agendamentosDoBanco.push(novoAgendamento);
+    alert('✅ Agendamento de ' + novoAgendamento.servico + ' realizado com sucesso!');
+    
+    // Limpar campos
+    document.getElementById('public-booking-form').reset();
+    carregarHorariosDisponiveis();
+  }
+
+  // --- RENDERIZAR AGENDAMENTOS NO PAINEL ADMIN ---
+  function renderizarAdmin() {
+    const listContainer = document.getElementById('admin-appointments-list');
+    listContainer.innerHTML = '';
+
+    if (agendamentosDoBanco.length === 0) {
+      listContainer.innerHTML = '<div class="empty-state">Nenhum agendamento registrado.</div>';
+      return;
+    }
+
+    agendamentosDoBanco.forEach(item => {
+      const el = document.createElement('div');
+      el.className = 'appointment-item';
+      el.innerHTML = `
+        <div>
+          <strong>${item.cliente_nome}</strong> (${item.cliente_phone})<br>
+          <small style="color: var(--text-muted);">${item.servico} — 📅 ${item.data} às <strong>${item.horario_inicio} - ${item.horario_fim}</strong></small>
+        </div>
+        <span class="badge">Confirmado</span>
+      `;
+      listContainer.appendChild(el);
+    });
+  }
+</script>
+
+</body>
+</html>
