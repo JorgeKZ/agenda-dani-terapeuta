@@ -601,30 +601,30 @@
                 `;
                 grid.appendChild(card);
             });
-604        }
-605      </script>
-606    
-607    <!-- Conexão com Firebase Firestore -->
-608    <script type="module">
-609      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-610      import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-611    
-612      const firebaseConfig = {
-613        apiKey: "AIzaSyB2l1BbhK0e-SJwE9uBmnLHAsmqjQLBO7Q",
-614        authDomain: "agenda-dani-terapeuta.firebaseapp.com",
-615        projectId: "agenda-dani-terapeuta",
-616        storageBucket: "agenda-dani-terapeuta.firebasestorage.app",
-617        messagingSenderId: "755500885669",
-618        appId: "1:755500885669:web:72145425dccb78dd6a8f4c",
-619        measurementId: "G-MR0493BTL7"
-620      };
-621    
-622      const app = initializeApp(firebaseConfig);
-623      const db = getFirestore(app);
-624    
-625      // Deixando o banco acessível globalmente no seu código
-626      window.db = db;
-627      window.firestoreTools = { collection, addDoc, getDocs, deleteDoc, doc };
-628    </script>
-629    </body>
-630    </html>
+}
+  </script>
+
+  <!-- Conexão com Firebase Firestore -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyB2l1BbhK0e-SJwE9uBmnLHAsmqjQLBO7Q",
+      authDomain: "agenda-dani-terapeuta.firebaseapp.com",
+      projectId: "agenda-dani-terapeuta",
+      storageBucket: "agenda-dani-terapeuta.firebasestorage.app",
+      messagingSenderId: "755500885669",
+      appId: "1:755500885669:web:72145425dccb78dd6a8f4c",
+      measurementId: "G-MR0493BTL7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Disponibiliza o banco de dados globalmente
+    window.db = db;
+    window.firestoreTools = { collection, addDoc, getDocs, deleteDoc, doc };
+  </script>
+</body>
+</html>
