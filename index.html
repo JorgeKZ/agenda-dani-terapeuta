@@ -1,427 +1,537 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dani Santos Terapeuta Holística - Agendamentos</title>
-  <style>
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f3f0f7;
-    background-image: 
-        radial-gradient(at 0% 0%, rgba(124, 58, 237, 0.08) 0px, transparent 50%),
-        radial-gradient(at 100% 0%, rgba(236, 72, 153, 0.06) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.08) 0px, transparent 50%),
-        radial-gradient(at 0% 100%, rgba(20, 184, 166, 0.05) 0px, transparent 50%);
-    background-attachment: fixed;
-    color: var(--text);
-    margin: 0;
-    padding: 20px;
-    min-height: 100vh;
-}
-   
-    .app-container {
-      width: 100%;
-      max-width: 900px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dani Santos - Terapeuta Holística</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #d4af37;
+            --gold-light: #f3e5ab;
+            --bg-dark: #0f0c20;
+            --card-bg: rgba(25, 20, 45, 0.88);
+            --text-light: #f8f9fa;
+            --text-muted: #a0aec0;
+        }
 
-    /* Navegação de Abas */
-    .tabs-nav {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-      background: #e2e8f0;
-      padding: 5px;
-      border-radius: var(--radius);
-    }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    .tab-btn {
-      flex: 1;
-      padding: 10px;
-      border: none;
-      background: transparent;
-      font-weight: 600;
-      cursor: pointer;
-      border-radius: 8px;
-      color: var(--text-muted);
-      transition: all 0.2s;
-    }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 15px;
+            position: relative;
+        }
 
-    .tab-btn.active {
-      background: var(--card-bg);
-      color: var(--primary);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
+        .bg-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(124, 58, 237, 0.2) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.12) 0%, transparent 40%);
+            z-index: -1;
+            pointer-events: none;
+        }
 
-    /* Layout do Card Central */
-    .card {
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-      padding: 24px;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-      margin-bottom: 20px;
-    }
+        .app-card {
+            width: 100%;
+            max-width: 750px;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            margin-bottom: 25px;
+        }
 
-    .header-profile {
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 16px;
-      margin-bottom: 20px;
-    }
+        .header-title-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
 
-    .header-profile h1 {
-      font-size: 1.5rem;
-      color: var(--primary);
-    }
+        .header-symbol {
+            width: 65px;
+            height: 65px;
+            flex-shrink: 0;
+            filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.5));
+        }
 
-    .header-profile p {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-    }
+        header h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 2.2rem;
+            color: var(--gold-light);
+            letter-spacing: 3px;
+            text-align: center;
+            flex-grow: 1;
+        }
 
-    /* Form Grids */
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
+        header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            text-align: center;
+        }
 
-    @media (max-width: 600px) {
-      .grid-2 { grid-template-columns: 1fr; }
-    }
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 25px 0;
+            opacity: 0.4;
+        }
 
-    .form-group {
-      margin-bottom: 16px;
-    }
+        .form-group {
+            margin-bottom: 20px;
+        }
 
-    label {
-      display: block;
-      font-weight: 600;
-      font-size: 0.85rem;
-      margin-bottom: 6px;
-      color: var(--text);
-    }
+        label {
+            display: block;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--gold);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
 
-    input, select {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-size: 0.95rem;
-      outline: none;
-    }
+        select, input[type="date"], input[type="text"], input[type="tel"] {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(15, 12, 32, 0.7);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
 
-    input:focus, select:focus {
-      border-color: var(--primary);
-    }
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            cursor: pointer;
+        }
 
-    /* Seletor de Horários Grid */
-    .slots-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-      gap: 10px;
-      margin-top: 10px;
-    }
+        select:focus, input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
 
-    .slot-btn {
-      padding: 10px;
-      border: 1px solid var(--border);
-      background: var(--card-bg);
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      text-align: center;
-      transition: all 0.2s;
-    }
+        .date-time-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
 
-    .slot-btn:hover {
-      border-color: var(--primary);
-      color: var(--primary);
-    }
+        @media (max-width: 600px) {
+            .date-time-grid {
+                grid-template-columns: 1fr;
+            }
+            .header-symbol {
+                width: 45px;
+                height: 45px;
+            }
+            header h1 {
+                font-size: 1.6rem;
+            }
+        }
 
-    .slot-btn.selected {
-      background: var(--primary);
-      color: white;
-      border-color: var(--primary);
-    }
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            max-height: 180px;
+            overflow-y: auto;
+        }
 
-    .btn-primary {
-      width: 100%;
-      padding: 12px;
-      background: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 1rem;
-      cursor: pointer;
-      margin-top: 10px;
-    }
+        .time-btn {
+            background: rgba(15, 12, 32, 0.6);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            color: var(--text-light);
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 0.9rem;
+        }
 
-    .btn-primary:hover {
-      background: var(--primary-hover);
-    }
+        .time-btn.active {
+            background: var(--gold);
+            color: #000;
+            font-weight: bold;
+        }
 
-    /* Lista de Agendamentos (Admin) */
-    .appointment-item {
-      padding: 12px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+        .btn-submit {
+            width: 100%;
+            background: linear-gradient(135deg, var(--gold) 0%, #b8860b 100%);
+            color: #000;
+            font-size: 1.05rem;
+            font-weight: 700;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
 
-    .badge {
-      background: #dcfce7;
-      color: var(--success);
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-size: 0.8rem;
-      font-weight: 600;
-    }
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
+        }
 
-    .empty-state {
-      text-align: center;
-      color: var(--text-muted);
-      padding: 20px;
-    }
-  </style>
+        /* Mensagem de Sucesso */
+        .success-box {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.4);
+            border-radius: 16px;
+            margin-top: 20px;
+        }
+
+        .success-box h3 {
+            color: #4ade80;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .success-box p {
+            font-size: 0.95rem;
+            color: var(--text-light);
+        }
+
+        /* Rodapé Restrito */
+        .admin-trigger {
+            margin-top: 15px;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            cursor: pointer;
+            text-decoration: underline;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+        }
+
+        .admin-trigger:hover {
+            opacity: 1;
+            color: var(--gold);
+        }
+
+        /* Área de Agendamentos (Oculta) */
+        .dashboard-section {
+            display: none;
+            width: 100%;
+            max-width: 750px;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 24px;
+            padding: 30px;
+            margin-top: 20px;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-header h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold-light);
+            font-size: 1.3rem;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .filter-btn {
+            background: rgba(15, 12, 32, 0.6);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: var(--text-light);
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .filter-btn.active {
+            background: var(--gold);
+            color: #000;
+            font-weight: bold;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 15px;
+        }
+
+        .appointment-card {
+            background: rgba(15, 12, 32, 0.8);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            border-radius: 14px;
+            padding: 16px;
+        }
+
+        .appointment-card h3 {
+            color: var(--gold);
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        .appointment-card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .no-data {
+            text-align: center;
+            color: var(--text-muted);
+            grid-column: 1 / -1;
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
 <body>
 
-<div class="app-container">
+    <div class="bg-glow"></div>
 
-  <!-- Navegação de Abas -->
-  <div class="tabs-nav">
-    <button class="tab-btn active" onclick="switchTab(event, 'client-view')">🔗 Link Público (Cliente)</button>
-    <button class="tab-btn" onclick="switchTab(event, 'admin-view')">⚙️ Painel Interno (Admin)</button>
-  </div>
+    <div class="app-card">
+        <header>
+            <div class="header-title-container">
+                <!-- Símbolo / Escudo do Arcanjo Miguel (Esquerda) -->
+                <svg class="header-symbol" viewBox="0 0 200 200" fill="none" stroke="#d4af37" stroke-width="2.5">
+                    <circle cx="100" cy="100" r="90" stroke-width="2"/>
+                    <circle cx="100" cy="100" r="75" stroke-width="1.5"/>
+                    <!-- Pentagrama do Arcanjo -->
+                    <polygon points="100,28 121,88 184,88 133,125 152,185 100,148 48,185 67,125 16,88 79,88" stroke-width="1.5" fill="none"/>
+                    <!-- Espada Central da Proteção -->
+                    <path d="M100,15 L100,165" stroke-width="3"/>
+                    <path d="M85,50 L115,50" stroke-width="3"/>
+                    <circle cx="100" cy="172" r="5" fill="#d4af37"/>
+                </svg>
 
-  <!-- VISÃO 1: LINK PÚBLICO DO CLIENTE -->
-  <div id="client-view" class="tab-content">
-    <div class="card">
-      <div class="header-profile">
-        <h1>Dani Santos Terapeuta Holística</h1>
-        <p>Escolha o serviço, dia e horário desejado para o seu atendimento.</p>
-      </div>
+                <h1>Dani Santos</h1>
 
-      <form id="public-booking-form" onsubmit="confirmarAgendamento(event)">
-        <div class="grid-2">
-          <div class="form-group">
-            <label>Selecione o Serviço</label>
-            <select id="service-select" required>
-              <option value="Atendimento Terapêutico">Atendimento Terapêutico (1 hora)</option>
-              <option value="Sessão Terapêutica Express">Atendimento Terapêutico Express (45 min)</option>
-            </select>
-          </div>
+                <!-- Símbolo / Escudo do Arcanjo Miguel (Direita) -->
+                <svg class="header-symbol" viewBox="0 0 200 200" fill="none" stroke="#d4af37" stroke-width="2.5">
+                    <circle cx="100" cy="100" r="90" stroke-width="2"/>
+                    <circle cx="100" cy="100" r="75" stroke-width="1.5"/>
+                    <!-- Pentagrama do Arcanjo -->
+                    <polygon points="100,28 121,88 184,88 133,125 152,185 100,148 48,185 67,125 16,88 79,88" stroke-width="1.5" fill="none"/>
+                    <!-- Espada Central da Proteção -->
+                    <path d="M100,15 L100,165" stroke-width="3"/>
+                    <path d="M85,50 L115,50" stroke-width="3"/>
+                    <circle cx="100" cy="172" r="5" fill="#d4af37"/>
+                </svg>
+            </div>
+            <p>Terapeuta Holística • Agendamento Online</p>
+        </header>
 
-          <div class="form-group">
-            <label>Data</label>
-            <input type="date" id="booking-date" required onchange="carregarHorariosDisponiveis()">
-          </div>
+        <div class="divider"></div>
+
+        <form id="bookingForm">
+            <div class="form-group">
+                <label for="service">Selecione o Serviço</label>
+                <select id="service" onchange="handleServiceChange()" required>
+                    <option value="" disabled selected>Escolha o atendimento...</option>
+                    <option value="Massagem Energética">Massagem Energética</option>
+                    <option value="Reiki & Alinhamento dos Chakras">Reiki & Alinhamento dos Chakras</option>
+                    <option value="Tarô">Tarô</option>
+                    <option value="Mesa Radiônica">Mesa Radiônica</option>
+                    <option value="Esteira de Ervas">Esteira de Ervas</option>
+                    <option value="Limpeza de Final de Ano">Limpeza de Final de Ano</option>
+                    <option value="Encontro Sagrado Feminino">Encontro Sagrado Feminino</option>
+                </select>
+            </div>
+
+            <div class="date-time-grid" id="dateTimeSection">
+                <div class="form-group">
+                    <label for="date">Selecione a Data</label>
+                    <input type="date" id="date">
+                </div>
+
+                <div class="form-group">
+                    <label>Horários</label>
+                    <div class="time-slots" id="timeSlots">
+                        <div class="time-btn" onclick="selectTime(this, '08:00')">08:00</div>
+                        <div class="time-btn" onclick="selectTime(this, '10:00')">10:00</div>
+                        <div class="time-btn" onclick="selectTime(this, '12:00')">12:00</div>
+                        <div class="time-btn" onclick="selectTime(this, '14:00')">14:00</div>
+                        <div class="time-btn" onclick="selectTime(this, '16:00')">16:00</div>
+                        <div class="time-btn" onclick="selectTime(this, '18:00')">18:00</div>
+                        <div class="time-btn" onclick="selectTime(this, '20:00')">20:00</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="name">Seu Nome Completo</label>
+                <input type="text" id="name" placeholder="Digite seu nome" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Celular / WhatsApp</label>
+                <input type="tel" id="phone" placeholder="(00) 00000-0000" required>
+            </div>
+
+            <button type="button" class="btn-submit" id="submitBtn" onclick="processBooking()">Confirmar Agendamento</button>
+        </form>
+
+        <div class="success-box" id="successBox">
+            <h3>✨ Agendamento Confirmado!</h3>
+            <p id="successMsg">Seus dados foram enviados com sucesso para a terapeuta Dani Santos.</p>
         </div>
-
-        <div class="form-group">
-          <label>Horários Disponíveis</label>
-          <div id="slots-container" class="slots-grid">
-            <div class="empty-state">Selecione uma data para consultar os horários livres.</div>
-          </div>
-        </div>
-
-        <hr style="margin: 20px 0; border: none; border-top: 1px solid var(--border);">
-
-        <div class="grid-2">
-          <div class="form-group">
-            <label>Seu Nome Completo</label>
-            <input type="text" id="client-name" placeholder="Ex: Maria Silva" required>
-          </div>
-          <div class="form-group">
-            <label>WhatsApp / Telefone</label>
-            <input type="tel" id="client-phone" placeholder="(00) 00000-0000" required>
-          </div>
-        </div>
-
-        <button type="submit" class="btn-primary">Confirmar Agendamento</button>
-      </form>
     </div>
-  </div>
 
-  <!-- VISÃO 2: PAINEL DO ADMINISTRADOR -->
-  <div id="admin-view" class="tab-content" style="display: none;">
-    <div class="card">
-      <div class="header-profile">
-        <h2>Agendamentos de Dani Santos</h2>
-        <p>Gerenciamento de consultas e sincronização com o Controle de Vendas.</p>
-      </div>
+    <div class="admin-trigger" onclick="accessAdmin()">Área da Terapeuta 🔒</div>
 
-      <div id="admin-appointments-list">
-        <!-- Lista carregada dinamicamente pelo JS -->
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<script>
-  // --- CONFIGURAÇÃO DE ATENDIMENTO ---
-  const configEmpresa = {
-    inicio: "08:00",
-    ultimo_horario_inicio: "20:00", // Permite agendar às 20:00
-    duracao_minutos: 60,            // Duração padrão de 1 hora por atendimento
-    intervalo_minutos: 0           // Sem intervalo fixo
-  };
-
-  // Banco de dados em memória
-  let agendamentosDoBanco = [
-    {
-      id: "001",
-      cliente_nome: "Ana Souza",
-      cliente_phone: "51988887777",
-      servico: "Atendimento Terapêutico",
-      data: "2026-08-10",
-      horario_inicio: "10:00",
-      horario_fim: "11:00"
-    }
-  ];
-
-  let horarioSelecionado = null;
-
-  // Setar data mínima como hoje
-  document.getElementById('booking-date').min = new Date().toISOString().split('T')[0];
-
-  // Alternar entre abas
-  function switchTab(evt, tabId) {
-    document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
-    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-    
-    document.getElementById(tabId).style.display = 'block';
-    evt.target.classList.add('active');
-
-    if (tabId === 'admin-view') {
-      renderizarAdmin();
-    }
-  }
-
-  // --- CÁLCULO DE DISPONIBILIDADE (PERMITINDO INÍCIO ÀS 20:00) ---
-  function carregarHorariosDisponiveis() {
-    const dataInput = document.getElementById('booking-date').value;
-    const container = document.getElementById('slots-container');
-    container.innerHTML = '';
-    horarioSelecionado = null;
-
-    if (!dataInput) return;
-
-    // Filtra apenas os agendamentos existentes na data selecionada
-    const ocupados = agendamentosDoBanco.filter(a => a.data === dataInput);
-
-    const timeToMins = t => {
-      const [h, m] = t.split(':').map(Number);
-      return h * 60 + m;
-    };
-    
-    const minsToTime = m => {
-      const h = Math.floor(m / 60).toString().padStart(2, '0');
-      const min = (m % 60).toString().padStart(2, '0');
-      return `${h}:${min}`;
-    };
-
-    const inicio = timeToMins(configEmpresa.inicio);
-    const ultimoInicio = timeToMins(configEmpresa.ultimo_horario_inicio);
-    const slotTotal = configEmpresa.duracao_minutos + configEmpresa.intervalo_minutos;
-
-    let atual = inicio;
-    let slotsEncontrados = 0;
-
-    // A condição permite gerar o slot inclusive quando o horário de início for 20:00
-    while (atual <= ultimoInicio) {
-      const slotIni = atual;
-      const slotFim = atual + configEmpresa.duracao_minutos;
-
-      // O único bloqueio existente é se o horário conflitar com um agendamento já feito
-      const conflitaAgendamento = ocupados.some(o => {
-        return (slotIni < timeToMins(o.horario_fim) && slotFim > timeToMins(o.horario_inicio));
-      });
-
-      if (!conflitaAgendamento) {
-        const txtInicio = minsToTime(slotIni);
-        const txtFim = minsToTime(slotFim);
-        
-        const btn = document.createElement('div');
-        btn.className = 'slot-btn';
-        btn.innerText = txtInicio;
-        btn.onclick = () => selecionarHorario(btn, txtInicio, txtFim);
-        
-        container.appendChild(btn);
-        slotsEncontrados++;
-      }
-
-      atual += slotTotal;
-    }
-
-    if (slotsEncontrados === 0) {
-      container.innerHTML = '<div class="empty-state">Nenhum horário disponível para esta data.</div>';
-    }
-  }
-
-  function selecionarHorario(elemento, inicio, fim) {
-    document.querySelectorAll('.slot-btn').forEach(el => el.classList.remove('selected'));
-    elemento.classList.add('selected');
-    horarioSelecionado = { inicio, fim };
-  }
-
-  // --- SUBMETER AGENDAMENTO DO CLIENTE ---
-  function confirmarAgendamento(e) {
-    e.preventDefault();
-
-    if (!horarioSelecionado) {
-      alert('Por favor, selecione um horário disponível na grade.');
-      return;
-    }
-
-    const novoAgendamento = {
-      id: Date.now().toString(),
-      cliente_nome: document.getElementById('client-name').value,
-      cliente_phone: document.getElementById('client-phone').value,
-      servico: document.getElementById('service-select').value,
-      data: document.getElementById('booking-date').value,
-      horario_inicio: horarioSelecionado.inicio,
-      horario_fim: horarioSelecionado.fim
-    };
-
-    agendamentosDoBanco.push(novoAgendamento);
-    alert('✅ Agendamento de ' + novoAgendamento.servico + ' realizado com sucesso!');
-    
-    // Limpar campos
-    document.getElementById('public-booking-form').reset();
-    carregarHorariosDisponiveis();
-  }
-
-  // --- RENDERIZAR AGENDAMENTOS NO PAINEL ADMIN ---
-  function renderizarAdmin() {
-    const listContainer = document.getElementById('admin-appointments-list');
-    listContainer.innerHTML = '';
-
-    if (agendamentosDoBanco.length === 0) {
-      listContainer.innerHTML = '<div class="empty-state">Nenhum agendamento registrado.</div>';
-      return;
-    }
-
-    agendamentosDoBanco.forEach(item => {
-      const el = document.createElement('div');
-      el.className = 'appointment-item';
-      el.innerHTML = `
-        <div>
-          <strong>${item.cliente_nome}</strong> (${item.cliente_phone})<br>
-          <small style="color: var(--text-muted);">${item.servico} — 📅 ${item.data} às <strong>${item.horario_inicio} - ${item.horario_fim}</strong></small>
+    <div class="dashboard-section" id="adminDashboard">
+        <div class="dashboard-header">
+            <h2>Painel da Terapeuta</h2>
+            <div class="filter-buttons">
+                <button class="filter-btn active" onclick="setFilter('day', this)">Dia</button>
+                <button class="filter-btn" onclick="setFilter('week', this)">Semana</button>
+                <button class="filter-btn" onclick="setFilter('month', this)">Mês</button>
+            </div>
         </div>
-        <span class="badge">Confirmado</span>
-      `;
-      listContainer.appendChild(el);
-    });
-  }
-</script>
 
+        <div class="cards-grid" id="appointmentsGrid"></div>
+    </div>
+
+    <script>
+        let selectedTimeValue = '';
+        let currentFilter = 'day';
+        let appointments = JSON.parse(localStorage.getItem('dani_appointments')) || [];
+
+        function selectTime(element, time) {
+            document.querySelectorAll('.time-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            selectedTimeValue = time;
+        }
+
+        function handleServiceChange() {
+            const service = document.getElementById('service').value;
+            const dateTimeSection = document.getElementById('dateTimeSection');
+            const submitBtn = document.getElementById('submitBtn');
+
+            if (service === 'Encontro Sagrado Feminino') {
+                dateTimeSection.style.display = 'none';
+                submitBtn.innerText = 'Inscrever-se no Encontro';
+            } else {
+                dateTimeSection.style.display = 'grid';
+                submitBtn.innerText = 'Confirmar Agendamento';
+            }
+        }
+
+        function processBooking() {
+            const service = document.getElementById('service').value;
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const date = document.getElementById('date').value;
+
+            if (!service || !name || !phone) {
+                alert('Por favor, preencha todos os campos obrigatórios!');
+                return;
+            }
+
+            const isEvent = service === 'Encontro Sagrado Feminino';
+
+            if (!isEvent && (!date || !selectedTimeValue)) {
+                alert('Por favor, selecione a data e o horário!');
+                return;
+            }
+
+            // Salva internamente no banco de dados local da aplicação
+            const newAppointment = {
+                id: Date.now(),
+                service,
+                name,
+                phone,
+                date: isEvent ? new Date().toISOString().split('T')[0] : date,
+                time: isEvent ? 'Evento Especial' : selectedTimeValue
+            };
+
+            appointments.push(newAppointment);
+            localStorage.setItem('dani_appointments', JSON.stringify(appointments));
+
+            // Exibe aviso de confirmação na tela sem redirecionar
+            document.getElementById('bookingForm').style.display = 'none';
+            const successBox = document.getElementById('successBox');
+            successBox.style.display = 'block';
+
+            const formattedDate = isEvent ? 'A combinar' : date.split('-').reverse().join('/');
+            document.getElementById('successMsg').innerHTML = 
+                `Obrigado(a), <strong>${name}</strong>!<br>Seu agendamento para <strong>${service}</strong> em <strong>${formattedDate}</strong> às <strong>${isEvent ? 'Horário a definir' : selectedTimeValue}</strong> foi registrado com sucesso.`;
+        }
+
+        function accessAdmin() {
+            const password = prompt("Digite a senha de acesso da Terapeuta:");
+            if (password === "dani123") {
+                document.getElementById('adminDashboard').style.display = 'block';
+                renderAppointments();
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            } else if (password !== null) {
+                alert("Senha incorreta!");
+            }
+        }
+
+        function setFilter(filter, element) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            renderAppointments();
+        }
+
+        function renderAppointments() {
+            const grid = document.getElementById('appointmentsGrid');
+            grid.innerHTML = '';
+
+            if (appointments.length === 0) {
+                grid.innerHTML = '<div class="no-data">Nenhum agendamento registrado no momento.</div>';
+                return;
+            }
+
+            appointments.forEach(app => {
+                const card = document.createElement('div');
+                card.className = 'appointment-card';
+                const dateDisplay = app.date ? app.date.split('-').reverse().join('/') : '-';
+                
+                card.innerHTML = `
+                    <h3>${app.service}</h3>
+                    <p>👤 <strong>${app.name}</strong></p>
+                    <p>📱 ${app.phone}</p>
+                    <p>📅 ${dateDisplay}</p>
+                    <p>⏰ ${app.time}</p>
+                `;
+                grid.appendChild(card);
+            });
+        }
+    </script>
 </body>
 </html>
