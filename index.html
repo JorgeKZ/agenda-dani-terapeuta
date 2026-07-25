@@ -13,6 +13,9 @@
             --card-bg: rgba(25, 20, 45, 0.88);
             --text-light: #f8f9fa;
             --text-muted: #a0aec0;
+            --green: #22c55e;
+            --red: #ef4444;
+            --blue: #3b82f6;
         }
 
         * {
@@ -29,7 +32,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 30px 15px;
+            justify-content: center;
+            padding: 20px 10px;
             position: relative;
         }
 
@@ -47,61 +51,42 @@
         }
 
         .app-card {
-            width: 100%;
-            max-width: 750px;
+            width: 94%;
+            max-width: 650px;
             background: var(--card-bg);
             backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(212, 175, 55, 0.3);
-            border-radius: 24px;
-            padding: 35px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-            margin-bottom: 25px;
+            border-radius: 20px;
+            padding: 28px 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            margin: 0 auto 20px auto;
         }
 
-        .header-title-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 15px;
-            margin-bottom: 10px;
-        }
-
-        .header-symbol {
-            width: 65px;
-            height: 65px;
-            flex-shrink: 0;
-            filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.5));
-        }
+        header { text-align: center; }
 
         header h1 {
             font-family: 'Cinzel', serif;
-            font-size: 2.2rem;
+            font-size: 2rem;
             color: var(--gold-light);
-            letter-spacing: 3px;
-            text-align: center;
-            flex-grow: 1;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
         }
 
-        header p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            text-align: center;
-        }
+        header p { color: var(--text-muted); font-size: 0.9rem; }
 
         .divider {
             height: 1px;
             background: linear-gradient(90deg, transparent, var(--gold), transparent);
-            margin: 25px 0;
+            margin: 20px 0;
             opacity: 0.4;
         }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+        .form-group { margin-bottom: 18px; }
 
         label {
             display: block;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 1.2px;
             color: var(--gold);
@@ -111,20 +96,18 @@
 
         select, input[type="date"], input[type="text"], input[type="tel"] {
             width: 100%;
-            padding: 14px 18px;
-            background: rgba(15, 12, 32, 0.7);
+            padding: 14px 15px;
+            background: rgba(15, 12, 32, 0.75);
             border: 1px solid rgba(212, 175, 55, 0.3);
             border-radius: 12px;
             color: #fff;
-            font-size: 1rem;
+            font-size: 0.95rem;
             outline: none;
             transition: all 0.3s ease;
+            -webkit-appearance: none;
         }
 
-        input[type="date"]::-webkit-calendar-picker-indicator {
-            filter: invert(1);
-            cursor: pointer;
-        }
+        input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); cursor: pointer; }
 
         select:focus, input:focus {
             border-color: var(--gold);
@@ -134,20 +117,7 @@
         .date-time-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        @media (max-width: 600px) {
-            .date-time-grid {
-                grid-template-columns: 1fr;
-            }
-            .header-symbol {
-                width: 45px;
-                height: 45px;
-            }
-            header h1 {
-                font-size: 1.6rem;
-            }
+            gap: 15px;
         }
 
         .time-slots {
@@ -162,32 +132,37 @@
             background: rgba(15, 12, 32, 0.6);
             border: 1px solid rgba(212, 175, 55, 0.2);
             color: var(--text-light);
-            padding: 10px;
+            padding: 10px 5px;
             border-radius: 8px;
             cursor: pointer;
             text-align: center;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
         }
 
-        .time-btn.active {
-            background: var(--gold);
-            color: #000;
-            font-weight: bold;
+        .time-btn.active { background: var(--gold); color: #000; font-weight: bold; }
+
+        .time-btn.disabled {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.25);
+            cursor: not-allowed;
+            text-decoration: line-through;
         }
 
         .btn-submit {
             width: 100%;
             background: linear-gradient(135deg, var(--gold) 0%, #b8860b 100%);
             color: #000;
-            font-size: 1.05rem;
+            font-size: 1rem;
             font-weight: 700;
-            padding: 16px;
+            padding: 15px;
             border: none;
             border-radius: 12px;
             cursor: pointer;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-top: 15px;
+            margin-top: 10px;
             transition: all 0.3s ease;
         }
 
@@ -196,7 +171,6 @@
             box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
         }
 
-        /* Mensagem de Sucesso */
         .success-box {
             display: none;
             text-align: center;
@@ -204,47 +178,43 @@
             background: rgba(34, 197, 94, 0.15);
             border: 1px solid rgba(34, 197, 94, 0.4);
             border-radius: 16px;
-            margin-top: 20px;
-        }
-
-        .success-box h3 {
-            color: #4ade80;
-            font-size: 1.3rem;
-            margin-bottom: 10px;
-        }
-
-        .success-box p {
-            font-size: 0.95rem;
-            color: var(--text-light);
-        }
-
-        /* Rodapé Restrito */
-        .admin-trigger {
             margin-top: 15px;
+        }
+
+        .success-box h3 { color: #4ade80; font-size: 1.2rem; margin-bottom: 8px; }
+        .success-box p { font-size: 0.9rem; color: var(--text-light); }
+
+        @media (max-width: 580px) {
+            .app-card { padding: 22px 16px; width: 96%; }
+            header h1 { font-size: 1.6rem; }
+            header p { font-size: 0.85rem; }
+            .date-time-grid { grid-template-columns: 1fr; gap: 10px; }
+            .time-slots { grid-template-columns: repeat(3, 1fr); max-height: none; }
+        }
+
+        .admin-trigger {
+            margin-top: 10px;
             color: var(--text-muted);
             font-size: 0.8rem;
             cursor: pointer;
             text-decoration: underline;
             opacity: 0.6;
-            transition: opacity 0.2s;
+            text-align: center;
         }
 
-        .admin-trigger:hover {
-            opacity: 1;
-            color: var(--gold);
-        }
+        .admin-trigger:hover { opacity: 1; color: var(--gold); }
 
-        /* Área de Agendamentos (Oculta) */
+        /* Dashboard da Terapeuta */
         .dashboard-section {
             display: none;
-            width: 100%;
-            max-width: 750px;
+            width: 94%;
+            max-width: 650px;
             background: var(--card-bg);
             backdrop-filter: blur(16px);
             border: 1px solid rgba(212, 175, 55, 0.4);
-            border-radius: 24px;
-            padding: 30px;
-            margin-top: 20px;
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 15px;
         }
 
         .dashboard-header {
@@ -252,68 +222,114 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: 10px;
+            margin-bottom: 15px;
         }
 
-        .dashboard-header h2 {
-            font-family: 'Cinzel', serif;
-            color: var(--gold-light);
-            font-size: 1.3rem;
-        }
+        .dashboard-header h2 { font-family: 'Cinzel', serif; color: var(--gold-light); font-size: 1.2rem; }
 
-        .filter-buttons {
+        .tab-buttons {
             display: flex;
             gap: 8px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            padding-bottom: 10px;
         }
 
-        .filter-btn {
+        .tab-btn {
             background: rgba(15, 12, 32, 0.6);
             border: 1px solid rgba(212, 175, 55, 0.3);
-            color: var(--text-light);
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
             padding: 8px 14px;
             border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.85rem;
+            transition: all 0.2s;
         }
 
-        .filter-btn.active {
+        .tab-btn.active {
             background: var(--gold);
             color: #000;
+            border-color: var(--gold);
+        }
+
+        .toast-notification {
+            display: none;
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid var(--green);
+            color: #fff;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+            text-align: center;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .toast-btn {
+            background: var(--green);
+            color: #000;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 6px;
             font-weight: bold;
+            cursor: pointer;
+            margin-left: 10px;
         }
 
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 15px;
+            gap: 12px;
         }
 
         .appointment-card {
-            background: rgba(15, 12, 32, 0.8);
+            background: rgba(15, 12, 32, 0.85);
             border: 1px solid rgba(212, 175, 55, 0.25);
-            border-radius: 14px;
-            padding: 16px;
+            border-radius: 12px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
-        .appointment-card h3 {
-            color: var(--gold);
-            font-size: 1rem;
-            margin-bottom: 8px;
+        .appointment-card h3 { color: var(--gold); font-size: 0.95rem; margin-bottom: 6px; }
+        .appointment-card p { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 4px; }
+
+        .card-actions {
+            display: flex;
+            gap: 6px;
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        .appointment-card p {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 4px;
+        .action-btn {
+            flex: 1;
+            padding: 6px 0;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            color: #fff;
+            transition: opacity 0.2s;
         }
+
+        .action-btn:hover { opacity: 0.85; }
+        .btn-complete { background: var(--green); }
+        .btn-reschedule { background: var(--blue); }
+        .btn-delete { background: var(--red); }
 
         .no-data {
             text-align: center;
             color: var(--text-muted);
             grid-column: 1 / -1;
-            padding: 20px;
-            font-size: 0.9rem;
+            padding: 15px;
+            font-size: 0.85rem;
         }
     </style>
 </head>
@@ -323,33 +339,7 @@
 
     <div class="app-card">
         <header>
-            <div class="header-title-container">
-                <!-- Símbolo / Escudo do Arcanjo Miguel (Esquerda) -->
-                <svg class="header-symbol" viewBox="0 0 200 200" fill="none" stroke="#d4af37" stroke-width="2.5">
-                    <circle cx="100" cy="100" r="90" stroke-width="2"/>
-                    <circle cx="100" cy="100" r="75" stroke-width="1.5"/>
-                    <!-- Pentagrama do Arcanjo -->
-                    <polygon points="100,28 121,88 184,88 133,125 152,185 100,148 48,185 67,125 16,88 79,88" stroke-width="1.5" fill="none"/>
-                    <!-- Espada Central da Proteção -->
-                    <path d="M100,15 L100,165" stroke-width="3"/>
-                    <path d="M85,50 L115,50" stroke-width="3"/>
-                    <circle cx="100" cy="172" r="5" fill="#d4af37"/>
-                </svg>
-
-                <h1>Dani Santos</h1>
-
-                <!-- Símbolo / Escudo do Arcanjo Miguel (Direita) -->
-                <svg class="header-symbol" viewBox="0 0 200 200" fill="none" stroke="#d4af37" stroke-width="2.5">
-                    <circle cx="100" cy="100" r="90" stroke-width="2"/>
-                    <circle cx="100" cy="100" r="75" stroke-width="1.5"/>
-                    <!-- Pentagrama do Arcanjo -->
-                    <polygon points="100,28 121,88 184,88 133,125 152,185 100,148 48,185 67,125 16,88 79,88" stroke-width="1.5" fill="none"/>
-                    <!-- Espada Central da Proteção -->
-                    <path d="M100,15 L100,165" stroke-width="3"/>
-                    <path d="M85,50 L115,50" stroke-width="3"/>
-                    <circle cx="100" cy="172" r="5" fill="#d4af37"/>
-                </svg>
-            </div>
+            <h1>Dani Santos</h1>
             <p>Terapeuta Holística • Agendamento Online</p>
         </header>
 
@@ -373,19 +363,19 @@
             <div class="date-time-grid" id="dateTimeSection">
                 <div class="form-group">
                     <label for="date">Selecione a Data</label>
-                    <input type="date" id="date">
+                    <input type="date" id="date" onchange="updateAvailableTimes()">
                 </div>
 
                 <div class="form-group">
                     <label>Horários</label>
                     <div class="time-slots" id="timeSlots">
-                        <div class="time-btn" onclick="selectTime(this, '08:00')">08:00</div>
-                        <div class="time-btn" onclick="selectTime(this, '10:00')">10:00</div>
-                        <div class="time-btn" onclick="selectTime(this, '12:00')">12:00</div>
-                        <div class="time-btn" onclick="selectTime(this, '14:00')">14:00</div>
-                        <div class="time-btn" onclick="selectTime(this, '16:00')">16:00</div>
-                        <div class="time-btn" onclick="selectTime(this, '18:00')">18:00</div>
-                        <div class="time-btn" onclick="selectTime(this, '20:00')">20:00</div>
+                        <div class="time-btn" data-time="08:00" onclick="selectTime(this, '08:00')">08:00</div>
+                        <div class="time-btn" data-time="10:00" onclick="selectTime(this, '10:00')">10:00</div>
+                        <div class="time-btn" data-time="12:00" onclick="selectTime(this, '12:00')">12:00</div>
+                        <div class="time-btn" data-time="14:00" onclick="selectTime(this, '14:00')">14:00</div>
+                        <div class="time-btn" data-time="16:00" onclick="selectTime(this, '16:00')">16:00</div>
+                        <div class="time-btn" data-time="18:00" onclick="selectTime(this, '18:00')">18:00</div>
+                        <div class="time-btn" data-time="20:00" onclick="selectTime(this, '20:00')">20:00</div>
                     </div>
                 </div>
             </div>
@@ -411,14 +401,22 @@
 
     <div class="admin-trigger" onclick="accessAdmin()">Área da Terapeuta 🔒</div>
 
+    <!-- Dashboard da Terapeuta -->
     <div class="dashboard-section" id="adminDashboard">
         <div class="dashboard-header">
             <h2>Painel da Terapeuta</h2>
-            <div class="filter-buttons">
-                <button class="filter-btn active" onclick="setFilter('day', this)">Dia</button>
-                <button class="filter-btn" onclick="setFilter('week', this)">Semana</button>
-                <button class="filter-btn" onclick="setFilter('month', this)">Mês</button>
-            </div>
+        </div>
+
+        <!-- Botões de Troca de Lista/Base -->
+        <div class="tab-buttons">
+            <button class="tab-btn active" id="tabActiveBtn" onclick="switchTab('active')">📅 Agendados</button>
+            <button class="tab-btn" id="tabCompletedBtn" onclick="switchTab('completed')">📁 Atendimentos Realizados</button>
+        </div>
+
+        <!-- Notificação com Botão Direto -->
+        <div class="toast-notification" id="toastNotice">
+            <span>Atendimento marcado como concluído!</span>
+            <button class="toast-btn" onclick="switchTab('completed')">Ver Atendimentos Realizados ➔</button>
         </div>
 
         <div class="cards-grid" id="appointmentsGrid"></div>
@@ -426,13 +424,30 @@
 
     <script>
         let selectedTimeValue = '';
-        let currentFilter = 'day';
+        let currentTab = 'active'; // 'active' ou 'completed'
         let appointments = JSON.parse(localStorage.getItem('dani_appointments')) || [];
 
         function selectTime(element, time) {
+            if (element.classList.contains('disabled')) return;
             document.querySelectorAll('.time-btn').forEach(btn => btn.classList.remove('active'));
             element.classList.add('active');
             selectedTimeValue = time;
+        }
+
+        function updateAvailableTimes() {
+            const selectedDate = document.getElementById('date').value;
+            selectedTimeValue = '';
+
+            document.querySelectorAll('.time-btn').forEach(btn => {
+                btn.classList.remove('active', 'disabled');
+                const btnTime = btn.getAttribute('data-time');
+
+                const isOccupied = appointments.some(app => app.status !== 'completed' && app.date === selectedDate && app.time === btnTime);
+
+                if (isOccupied) {
+                    btn.classList.add('disabled');
+                }
+            });
         }
 
         function handleServiceChange() {
@@ -463,24 +478,23 @@
             const isEvent = service === 'Encontro Sagrado Feminino';
 
             if (!isEvent && (!date || !selectedTimeValue)) {
-                alert('Por favor, selecione a data e o horário!');
+                alert('Por favor, selecione a data e um horário disponível!');
                 return;
             }
 
-            // Salva internamente no banco de dados local da aplicação
             const newAppointment = {
                 id: Date.now(),
                 service,
                 name,
                 phone,
                 date: isEvent ? new Date().toISOString().split('T')[0] : date,
-                time: isEvent ? 'Evento Especial' : selectedTimeValue
+                time: isEvent ? 'Evento Especial' : selectedTimeValue,
+                status: 'active'
             };
 
             appointments.push(newAppointment);
             localStorage.setItem('dani_appointments', JSON.stringify(appointments));
 
-            // Exibe aviso de confirmação na tela sem redirecionar
             document.getElementById('bookingForm').style.display = 'none';
             const successBox = document.getElementById('successBox');
             successBox.style.display = 'block';
@@ -501,33 +515,89 @@
             }
         }
 
-        function setFilter(filter, element) {
-            currentFilter = filter;
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            element.classList.add('active');
+        function switchTab(tab) {
+            currentTab = tab;
+            document.getElementById('tabActiveBtn').classList.toggle('active', tab === 'active');
+            document.getElementById('tabCompletedBtn').classList.toggle('active', tab === 'completed');
+            document.getElementById('toastNotice').style.display = 'none';
             renderAppointments();
+        }
+
+        function markAsCompleted(id) {
+            appointments = appointments.map(app => app.id === id ? { ...app, status: 'completed' } : app);
+            localStorage.setItem('dani_appointments', JSON.stringify(appointments));
+            
+            document.getElementById('toastNotice').style.display = 'flex';
+            
+            renderAppointments();
+            updateAvailableTimes();
+        }
+
+        function deleteAppointment(id) {
+            if (confirm("Tem certeza que deseja excluir este agendamento?")) {
+                appointments = appointments.filter(app => app.id !== id);
+                localStorage.setItem('dani_appointments', JSON.stringify(appointments));
+                renderAppointments();
+                updateAvailableTimes();
+            }
+        }
+
+        function rescheduleAppointment(id) {
+            const newDate = prompt("Digite a nova data (Formato AAAA-MM-DD ex: 2026-10-25):");
+            if (!newDate) return;
+
+            const newTime = prompt("Digite o novo horário (ex: 14:00, 16:00):");
+            if (!newTime) return;
+
+            appointments = appointments.map(app => app.id === id ? { ...app, date: newDate, time: newTime } : app);
+            localStorage.setItem('dani_appointments', JSON.stringify(appointments));
+            renderAppointments();
+            updateAvailableTimes();
+            alert("Agendamento remarcado com sucesso!");
         }
 
         function renderAppointments() {
             const grid = document.getElementById('appointmentsGrid');
             grid.innerHTML = '';
 
-            if (appointments.length === 0) {
-                grid.innerHTML = '<div class="no-data">Nenhum agendamento registrado no momento.</div>';
+            const filtered = appointments.filter(app => (app.status || 'active') === currentTab);
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="no-data">Nenhum registro em "${currentTab === 'active' ? 'Agendados' : 'Atendimentos Realizados'}".</div>`;
                 return;
             }
 
-            appointments.forEach(app => {
+            filtered.forEach(app => {
                 const card = document.createElement('div');
                 card.className = 'appointment-card';
                 const dateDisplay = app.date ? app.date.split('-').reverse().join('/') : '-';
                 
+                let actionsHtml = '';
+                if (currentTab === 'active') {
+                    actionsHtml = `
+                        <div class="card-actions">
+                            <button class="action-btn btn-complete" onclick="markAsCompleted(${app.id})" title="Mover para Atendimentos Realizados">✓ Concluir</button>
+                            <button class="action-btn btn-reschedule" onclick="rescheduleAppointment(${app.id})" title="Remarcar">✏️ Remarcar</button>
+                            <button class="action-btn btn-delete" onclick="deleteAppointment(${app.id})" title="Excluir">🗑️ Excluir</button>
+                        </div>
+                    `;
+                } else {
+                    actionsHtml = `
+                        <div class="card-actions">
+                            <button class="action-btn btn-delete" onclick="deleteAppointment(${app.id})" style="flex:1;">🗑️ Remover do Histórico</button>
+                        </div>
+                    `;
+                }
+
                 card.innerHTML = `
-                    <h3>${app.service}</h3>
-                    <p>👤 <strong>${app.name}</strong></p>
-                    <p>📱 ${app.phone}</p>
-                    <p>📅 ${dateDisplay}</p>
-                    <p>⏰ ${app.time}</p>
+                    <div>
+                        <h3>${app.service}</h3>
+                        <p>👤 <strong>${app.name}</strong></p>
+                        <p>📱 ${app.phone}</p>
+                        <p>📅 ${dateDisplay}</p>
+                        <p>⏰ ${app.time}</p>
+                    </div>
+                    ${actionsHtml}
                 `;
                 grid.appendChild(card);
             });
