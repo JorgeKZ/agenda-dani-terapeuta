@@ -422,19 +422,49 @@
         <div class="cards-grid" id="appointmentsGrid"></div>
     </div>
 
-    <script>
-        let selectedTimeValue = '';
-        let currentTab = 'active'; // 'active' ou 'completed'
-        let appointments = JSON.parse(localStorage.getItem('dani_appointments')) || [];
+    <!-- Conexão Firebase e Lógica da Aplicação -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { 
+            getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot 
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        function selectTime(element, time) {
+        const firebaseConfig = {
+            apiKey: "AIzaSyB2l1BbhK0e-SJwE9uBmnLHAsmqjQLBO7Q",
+            authDomain: "agenda-dani-terapeuta.firebaseapp.com",
+            projectId: "agenda-dani-terapeuta",
+            storageBucket: "agenda-dani-terapeuta.firebasestorage.app",
+            messagingSenderId: "755500885669",
+            appId: "1:755500885669:web:72145425dccb78dd6a8f4c",
+            measurementId: "G-MR0493BTL7"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const appointmentsRef = collection(db, "appointments");
+
+        let selectedTimeValue = '';
+        let currentTab = 'active';
+        let appointments = [];
+
+        // Escuta as alterações no Firebase em tempo real
+        onSnapshot(appointmentsRef, (snapshot) => {
+            appointments = [];
+            snapshot.forEach((doc) => {
+                appointments.push({ id: doc.id, ...doc.data() });
+            });
+            renderAppointments();
+            updateAvailableTimes();
+        });
+
+        window.selectTime = function(element, time) {
             if (element.classList.contains('disabled')) return;
             document.querySelectorAll('.time-btn').forEach(btn => btn.classList.remove('active'));
             element.classList.add('active');
             selectedTimeValue = time;
-        }
+        };
 
-        function updateAvailableTimes() {
+        window.updateAvailableTimes = function() {
             const selectedDate = document.getElementById('date').value;
             selectedTimeValue = '';
 
@@ -448,9 +478,9 @@
                     btn.classList.add('disabled');
                 }
             });
-        }
+        };
 
-        function handleServiceChange() {
+        window.handleServiceChange = function() {
             const service = document.getElementById('service').value;
             const dateTimeSection = document.getElementById('dateTimeSection');
             const submitBtn = document.getElementById('submitBtn');
@@ -462,9 +492,9 @@
                 dateTimeSection.style.display = 'grid';
                 submitBtn.innerText = 'Confirmar Agendamento';
             }
-        }
+        };
 
-        function processBooking() {
+        window.processBooking = async function() {
             const service = document.getElementById('service').value;
             const name = document.getElementById('name').value;
             const phone = document.getElementById('phone').value;
@@ -483,28 +513,31 @@
             }
 
             const newAppointment = {
-                id: Date.now(),
                 service,
                 name,
                 phone,
                 date: isEvent ? new Date().toISOString().split('T')[0] : date,
                 time: isEvent ? 'Evento Especial' : selectedTimeValue,
-                status: 'active'
+                status: 'active',
+                createdAt: new Date().toISOString()
             };
 
-            appointments.push(newAppointment);
-            localStorage.setItem('dani_appointments', JSON.stringify(appointments));
+            try {
+                await addDoc(appointmentsRef, newAppointment);
 
-            document.getElementById('bookingForm').style.display = 'none';
-            const successBox = document.getElementById('successBox');
-            successBox.style.display = 'block';
+                document.getElementById('bookingForm').style.display = 'none';
+                const successBox = document.getElementById('successBox');
+                successBox.style.display = 'block';
 
-            const formattedDate = isEvent ? 'A combinar' : date.split('-').reverse().join('/');
-            document.getElementById('successMsg').innerHTML = 
-                `Obrigado(a), <strong>${name}</strong>!<br>Seu agendamento para <strong>${service}</strong> em <strong>${formattedDate}</strong> às <strong>${isEvent ? 'Horário a definir' : selectedTimeValue}</strong> foi registrado com sucesso.`;
-        }
+                const formattedDate = isEvent ? 'A combinar' : date.split('-').reverse().join('/');
+                document.getElementById('successMsg').innerHTML = 
+                    `Obrigado(a), <strong>${name}</strong>!<br>Seu agendamento para <strong>${service}</strong> em <strong>${formattedDate}</strong> às <strong>${isEvent ? 'Horário a definir' : selectedTimeValue}</strong> foi registrado com sucesso.`;
+            } catch (error) {
+                alert("Erro ao salvar no banco de dados: " + error.message);
+            }
+        };
 
-        function accessAdmin() {
+        window.accessAdmin = function() {
             const password = prompt("Digite a senha de acesso da Terapeuta:");
             if (password === "dani123") {
                 document.getElementById('adminDashboard').style.display = 'block';
@@ -513,51 +546,56 @@
             } else if (password !== null) {
                 alert("Senha incorreta!");
             }
-        }
+        };
 
-        function switchTab(tab) {
+        window.switchTab = function(tab) {
             currentTab = tab;
             document.getElementById('tabActiveBtn').classList.toggle('active', tab === 'active');
             document.getElementById('tabCompletedBtn').classList.toggle('active', tab === 'completed');
             document.getElementById('toastNotice').style.display = 'none';
             renderAppointments();
-        }
+        };
 
-        function markAsCompleted(id) {
-            appointments = appointments.map(app => app.id === id ? { ...app, status: 'completed' } : app);
-            localStorage.setItem('dani_appointments', JSON.stringify(appointments));
-            
-            document.getElementById('toastNotice').style.display = 'flex';
-            
-            renderAppointments();
-            updateAvailableTimes();
-        }
-
-        function deleteAppointment(id) {
-            if (confirm("Tem certeza que deseja excluir este agendamento?")) {
-                appointments = appointments.filter(app => app.id !== id);
-                localStorage.setItem('dani_appointments', JSON.stringify(appointments));
-                renderAppointments();
-                updateAvailableTimes();
+        window.markAsCompleted = async function(id) {
+            try {
+                const docRef = doc(db, "appointments", id);
+                await updateDoc(docRef, { status: 'completed' });
+                document.getElementById('toastNotice').style.display = 'flex';
+            } catch (error) {
+                alert("Erro ao concluir: " + error.message);
             }
-        }
+        };
 
-        function rescheduleAppointment(id) {
+        window.deleteAppointment = async function(id) {
+            if (confirm("Tem certeza que deseja excluir este agendamento?")) {
+                try {
+                    const docRef = doc(db, "appointments", id);
+                    await deleteDoc(docRef);
+                } catch (error) {
+                    alert("Erro ao excluir: " + error.message);
+                }
+            }
+        };
+
+        window.rescheduleAppointment = async function(id) {
             const newDate = prompt("Digite a nova data (Formato AAAA-MM-DD ex: 2026-10-25):");
             if (!newDate) return;
 
             const newTime = prompt("Digite o novo horário (ex: 14:00, 16:00):");
             if (!newTime) return;
 
-            appointments = appointments.map(app => app.id === id ? { ...app, date: newDate, time: newTime } : app);
-            localStorage.setItem('dani_appointments', JSON.stringify(appointments));
-            renderAppointments();
-            updateAvailableTimes();
-            alert("Agendamento remarcado com sucesso!");
-        }
+            try {
+                const docRef = doc(db, "appointments", id);
+                await updateDoc(docRef, { date: newDate, time: newTime });
+                alert("Agendamento remarcado com sucesso!");
+            } catch (error) {
+                alert("Erro ao remarcar: " + error.message);
+            }
+        };
 
         function renderAppointments() {
             const grid = document.getElementById('appointmentsGrid');
+            if (!grid) return;
             grid.innerHTML = '';
 
             const filtered = appointments.filter(app => (app.status || 'active') === currentTab);
@@ -576,15 +614,15 @@
                 if (currentTab === 'active') {
                     actionsHtml = `
                         <div class="card-actions">
-                            <button class="action-btn btn-complete" onclick="markAsCompleted(${app.id})" title="Mover para Atendimentos Realizados">✓ Concluir</button>
-                            <button class="action-btn btn-reschedule" onclick="rescheduleAppointment(${app.id})" title="Remarcar">✏️ Remarcar</button>
-                            <button class="action-btn btn-delete" onclick="deleteAppointment(${app.id})" title="Excluir">🗑️ Excluir</button>
+                            <button class="action-btn btn-complete" onclick="markAsCompleted('${app.id}')" title="Mover para Atendimentos Realizados">✓ Concluir</button>
+                            <button class="action-btn btn-reschedule" onclick="rescheduleAppointment('${app.id}')" title="Remarcar">✏️ Remarcar</button>
+                            <button class="action-btn btn-delete" onclick="deleteAppointment('${app.id}')" title="Excluir">🗑️ Excluir</button>
                         </div>
                     `;
                 } else {
                     actionsHtml = `
                         <div class="card-actions">
-                            <button class="action-btn btn-delete" onclick="deleteAppointment(${app.id})" style="flex:1;">🗑️ Remover do Histórico</button>
+                            <button class="action-btn btn-delete" onclick="deleteAppointment('${app.id}')" style="flex:1;">🗑️ Remover do Histórico</button>
                         </div>
                     `;
                 }
@@ -601,30 +639,7 @@
                 `;
                 grid.appendChild(card);
             });
-}
-  </script>
-
-  <!-- Conexão com Firebase Firestore -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyB2l1BbhK0e-SJwE9uBmnLHAsmqjQLBO7Q",
-      authDomain: "agenda-dani-terapeuta.firebaseapp.com",
-      projectId: "agenda-dani-terapeuta",
-      storageBucket: "agenda-dani-terapeuta.firebasestorage.app",
-      messagingSenderId: "755500885669",
-      appId: "1:755500885669:web:72145425dccb78dd6a8f4c",
-      measurementId: "G-MR0493BTL7"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    // Disponibiliza o banco de dados globalmente
-    window.db = db;
-    window.firestoreTools = { collection, addDoc, getDocs, deleteDoc, doc };
-  </script>
+        }
+    </script>
 </body>
 </html>
